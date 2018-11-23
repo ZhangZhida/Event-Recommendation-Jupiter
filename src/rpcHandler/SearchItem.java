@@ -33,8 +33,6 @@ public class SearchItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		PrintWriter writer = response.getWriter();
 		
 		JSONArray array = new JSONArray();
 		try {
@@ -44,8 +42,7 @@ public class SearchItem extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		writer.print(array);
-		writer.close();
+		RpcHelper.writeJSONArray(response, array);
 	}
 
 	/**

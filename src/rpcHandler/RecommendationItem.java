@@ -32,9 +32,6 @@ public class RecommendationItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		PrintWriter writer = response.getWriter();
-		
 		JSONArray array = new JSONArray();
 		try {
 			array.put(new JSONObject().put("name", "abcd").put("address", "new york").put("time", "11/21/2018"));
@@ -43,8 +40,7 @@ public class RecommendationItem extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		writer.println(array);
-		writer.close();
+		RpcHelper.writeJSONArray(response, array);
 		
 	}
 	/**
