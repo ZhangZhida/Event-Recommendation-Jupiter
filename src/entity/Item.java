@@ -6,7 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// the needed information of the event
+// the needed information of the event, 
+// processing the raw JSON data from TicketMaster API and database
 public class Item {
 	private String itemId; 
 	private String name;
@@ -17,8 +18,10 @@ public class Item {
 	private String url; // link of the event
 	private double distance; // how far is the event from you
 	
-	private static class ItemBuilder {
-		// builder pattern
+	public static class ItemBuilder {
+		// builder pattern (builder class has to be static)
+		// 	1. disable modifying/setting after construction
+		// 	2. avoid initialization mistakes
 		private String itemId; 
 		private String name;
 		private double rating;
@@ -65,19 +68,6 @@ public class Item {
 		this.imageUrl = builder.imageUrl;
 		this.url = builder.url;
 		this.distance = builder.distance;
-	}
-	
-	
-	public Item(String itemId, String name, double rating, String address, Set<String> categories, String imageUrl,
-			String url, double distance) {
-		this.itemId = itemId;
-		this.name = name;
-		this.rating = rating;
-		this.address = address;
-		this.categories = categories;
-		this.imageUrl = imageUrl;
-		this.url = url;
-		this.distance = distance;
 	}
 
 	// interacting with front-end in JSON format
