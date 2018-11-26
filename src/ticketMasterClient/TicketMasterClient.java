@@ -155,6 +155,16 @@ public class TicketMasterClient {
 	// helper method
 	private String getImageUrl(JSONObject event) throws JSONException {
 		// return the first image url
+		if(!event.isNull("images")) {
+			JSONArray images = event.getJSONArray("images");
+			for(int i = 0; i < images.length(); i++) {
+				JSONObject image = images.getJSONObject(i);
+				if (!image.isNull("url")) {
+					return image.getString("url");
+				}
+			}
+		}
+		
 		return "";
 	}
 	
@@ -162,6 +172,18 @@ public class TicketMasterClient {
 	private Set<String> getCategories(JSONObject event) throws JSONException {
 		// return all the categories as tags
 		Set<String> categories = new HashSet<>();
+		if(!event.isNull("classifications")) {
+			JSONArray classifications = event.getJSONArray("classifications");
+			for (int i = 0; i < classifications.length(); i++) {
+				JSONObject classification = classifications.getJSONObject(i);
+				if (!classification.isNull("segment")) {
+					JSONObject segment = classification.getJSONObject("segment");
+					if(!segment.isNull("name")) {
+						categories.add(segment.getString("name"));
+					}
+				}
+			}
+		}
 		
 		return categories;
 	}
