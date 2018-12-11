@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
+import dbClient.DBConnection;
+import dbClient.DBConnectionFactory;
 import entity.Item;
 import ticketMasterClient.TicketMasterClient;
 
@@ -39,15 +41,35 @@ public class SearchItem extends HttpServlet {
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
 		
-		TicketMasterClient tmClient = new TicketMasterClient();
-		List<Item> items = tmClient.search(lat, lon, null);
+		// Do Get from the connection/database
+		String term = request.getParameter("term");
+		DBConnection connection = DBConnectionFactory.getConnection();
 		
-		JSONArray array = new JSONArray();
-		for (Item item : items) {
-			array.put(item.toJSONObject());
+		try {
+			List<Item> items = connection.searchItems(lat, lon, term);
+			JSONArray array = new JSONArray();
+			for (Item item : items) {
+				array.put(item.toJSONObject());
+			}
+			
+			RpcHelper.writeJSONArray(response, array);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				connection.close();
+			}
 		}
 		
-		RpcHelper.writeJSONArray(response, array);
+//		TicketMasterClient tmClient = new TicketMasterClient();
+//		List<Item> items = tmClient.search(lat, lon, null);
+//		
+//		JSONArray array = new JSONArray();
+//		for (Item item : items) {
+//			array.put(item.toJSONObject());
+//		}
+//		
+//		RpcHelper.writeJSONArray(response, array);
 	}
 
 	/**
