@@ -5,8 +5,8 @@
      */
     var user_id = '1234';
     var user_fullname = 'Vince';
-    var lng = -122.08;
-    var lat = 37.38;
+    var lng = -73.963856;
+    var lat = 40.801689;
 
     /**
      * Initialize
